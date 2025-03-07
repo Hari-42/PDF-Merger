@@ -4,17 +4,40 @@ const fileList = document.getElementById("fileList");
 
 let pdfFiles = [];
 
-function updateList(files) {
-    fileList.innerHTML = [...files].map(file => `<li class="bg-white p-2 mt-2 rounded-lg shadow text-gray-700">${file.name}</li>`).join("");
-    pdfFiles = [...files];
+function updateList() {
+    fileList.innerHTML = "";
+    pdfFiles.forEach((file, index) => {
+        const listItem = document.createElement("li");
+        listItem.className = "bg-white p-2 mt-2 rounded-lg shadow text-gray-700 flex justify-between items-center";
+
+        listItem.innerHTML = `
+            <span>${file.name}</span>
+            <button class="text-red-500" onclick="removeFile(${index})">✖</button>
+        `;
+
+        fileList.appendChild(listItem);
+    });
 }
 
+function addFiles(files) {
+    for (let file of files) {
+        pdfFiles.push(file);
+    }
+    updateList();
+}
 
-fileInput.onchange = (e) => updateList(e.target.files);
+function removeFile(index) {
+    pdfFiles.splice(index, 1);
+    updateList();
+}
 
-dropZone.ondragover = (e) => e.preventDefault();
-dropZone.ondrop = (e) => {
+fileInput.addEventListener("change", (e) => {
+    addFiles(e.target.files);
+});
+
+dropZone.addEventListener("dragover", (e) => e.preventDefault());
+
+dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
-    fileInput.files = e.dataTransfer.files;
-    updateList(e.dataTransfer.files)
-};
+    addFiles(e.dataTransfer.files);
+});
