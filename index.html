@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF-Merger</title>
+    <style> body { font-family: Roboto, sans-serif; } </style>
     <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body class="bg-gray-100 flex items-center justify-center">
+<body class="bg-blue-100 flex items-center justify-center">
 <main>
     <div class="pt-16"></div>
     <h1 class="text-4xl font-bold text-gray-800 text-center">PDF Merger</h1>
@@ -20,16 +22,27 @@
         <div class="pt-16"></div>
 
 
-        <div id="dropZone" class="mt-6 border-2 border-dashed border-gray-400 rounded-lg p-10 text-center bg-gray-50 transition-all">
+        <div id="dropZone" class="mt-6 border-2 border-dashed border-gray-400 rounded-lg p-10 text-center bg-gray-200 transition-all">
         <p class="text-gray-500">Drag & drop PDF files here</p>
         <input type="file" id="pdfInput" multiple accept="application/pdf" class="hidden" />
-        <label for="pdfInput" class="cursor-pointer bg-blue-500 text-xl text-white px-6 py-3 mt-4 inline-block rounded-lg hover:bg-blue-600">
+        <label for="pdfInput" class="cursor-pointer bg-blue-400 text-xl text-white px-6 py-3 mt-4 inline-block rounded-lg hover:bg-blue-500">
             Select PDF Files
         </label>
+
+
         </div>
 
         <ul id="fileList" class="mt-6 text-left max-w-lg mx-auto"></ul>
+
+
+        <button id="mergeBtn" class="hidden bg-green-400 text-white text-xl px-6 py-3 mt-6 rounded-lg hover:bg-green-500">
+            Merge PDFs
+        </button>
+
+
     </div>
+
+    <div class="pt-16"></div>
     <script src="script.js"></script>
 </main>
 </body>
