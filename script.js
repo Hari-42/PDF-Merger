@@ -6,7 +6,6 @@ const mergeBtn = document.getElementById("mergeBtn");
 let pdfFiles = [];
 
 function updateList() {
-
     fileList.innerHTML = "";
     pdfFiles.forEach((file, index) => {
         const listItem = document.createElement("li");
@@ -17,11 +16,8 @@ function updateList() {
             <button class="text-red-500" onclick="removeFile(${index})">✖</button>
         `;
 
-
         fileList.appendChild(listItem);
     });
-
-
 
     if (pdfFiles.length > 0) {
         mergeBtn.classList.remove("hidden");
@@ -37,7 +33,6 @@ function addFiles(files) {
         }
     }
     updateList();
-
 }
 
 function removeFile(index) {
@@ -56,24 +51,26 @@ dropZone.addEventListener("drop", (e) => {
     addFiles(e.dataTransfer.files);
 });
 
+mergeBtn.addEventListener("click", async () => {
+    const { PDFDocument } = PDFLib;
+    const mergedPdf = await PDFDocument.create();
 
+    for (let file of pdfFiles) {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await PDFDocument.load(arrayBuffer);
+        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copiedPages.forEach((page) => mergedPdf.addPage(page));
+    }
 
-mergeBtn.addEventListener("click", () => {
-     pdfFiles.forEach((file, index) => {
+    const mergedPdfBytes = await mergedPdf.save();
+    const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
 
-
-        const url = URL.createObjectURL(file);
-        const a = document.createElement("a");
-
-
-        a.href = url;
-        a.download = file.name;
-
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        URL.revokeObjectURL(url);
-    });
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "merged.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 });
-
