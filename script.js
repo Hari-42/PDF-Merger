@@ -15,9 +15,9 @@ function updateList() {
         listItem.dataset.index = index;
 
         listItem.innerHTML = `
-      <span class="flex items-center gap-2"><span class="text-gray-400">☰</span> ${file.name}</span>
-      <button class="text-red-500 hover:text-red-700" onclick="removeFile(${index})">✖</button>
-    `;
+            <span class="flex items-center gap-2"><span class="text-gray-400">☰</span> ${file.name}</span>
+            <button class="text-red-500 hover:text-red-700" onclick="removeFile(${index})">✖</button>
+        `;
 
         listItem.addEventListener("dragstart", (e) => {
             listItem.classList.add("dragging");
@@ -43,8 +43,6 @@ function updateList() {
             if (draggedIndex !== targetIndex) {
                 const moved = pdfFiles.splice(draggedIndex, 1)[0];
                 pdfFiles.splice(targetIndex, 0, moved);
-
-                // Re-render after a short delay to allow UI update
                 setTimeout(updateList, 0);
             }
         });
@@ -88,7 +86,18 @@ dropZone.addEventListener("dragleave", () => {
 
 dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent bubble to body drop
     dropZone.classList.remove("drag-over");
+    addFiles(e.dataTransfer.files);
+});
+
+// Global drag-and-drop handling for body (outside dropZone)
+document.body.addEventListener("dragover", (e) => {
+    e.preventDefault();
+});
+
+document.body.addEventListener("drop", (e) => {
+    e.preventDefault();
     addFiles(e.dataTransfer.files);
 });
 
