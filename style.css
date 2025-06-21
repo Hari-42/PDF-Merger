@@ -1,0 +1,16 @@
+body {
+    font-family: Roboto, sans-serif;
+}
+
+.drag-over {
+    background-color: #bfdbfe !important;
+    border-color: #3b82f6 !important;
+}
+
+li.dragging {
+    opacity: 0.4;
+}
+
+li.drag-over-item {
+    background-color: #e0f2fe;
+}

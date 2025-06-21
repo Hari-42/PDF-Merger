@@ -1,58 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF-Merger</title>
-    <style> body { font-family: Roboto, sans-serif; } </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PDF Merger</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-
 </head>
-<body class="bg-blue-100 flex items-center justify-center">
-<main>
-    <div class="pt-16"></div>
-    <h1 class="text-4xl font-bold text-gray-800 text-center">PDF Merger</h1>
+<body class="bg-blue-100 flex items-center justify-center min-h-screen">
+<main class="w-full max-w-2xl p-4">
+    <h1 class="text-4xl font-bold text-gray-800 text-center mt-8">PDF Merger</h1>
 
-    <div class="pt-16"></div>
-
-    <p>This is a pdf-merger, which I made. It is totally free and has no ads.</p>
-
-    <p class="mt-4 text-sm text-black-1000">
-        This was made by
+    <p class="text-center mt-4">This is a PDF merger. It's free, ad-free, and simple.</p>
+    <p class="text-sm text-center mt-2">
+        Made by
         <a href="https://github.com/Hari-42/PDF-Merger" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
             Hari
         </a>
         &copy; All rights reserved
     </p>
 
-    <div class="mt-8 text-center">
-
-        <div class="pt-16"></div>
-
-
-        <div id="dropZone" class="mt-6 border-2 border-dashed border-gray-400 rounded-lg p-10 text-center bg-gray-200 transition-all">
+    <div id="dropZone" class="mt-8 border-2 border-dashed border-gray-400 rounded-lg p-10 text-center bg-gray-200 transition-all">
         <p class="text-gray-500">Drag & drop PDF files here</p>
         <input type="file" id="pdfInput" multiple accept="application/pdf" class="hidden" />
         <label for="pdfInput" class="cursor-pointer bg-blue-400 text-xl text-white px-6 py-3 mt-4 inline-block rounded-lg hover:bg-blue-500">
             Select PDF Files
         </label>
-
-
-        </div>
-
-        <ul id="fileList" class="mt-6 text-left max-w-lg mx-auto"></ul>
-
-
-        <button id="mergeBtn" class="hidden bg-green-400 text-white text-xl px-6 py-3 mt-6 rounded-lg hover:bg-green-500">
-            Merge PDFs
-        </button>
-
-
     </div>
 
-    <div class="pt-16"></div>
-    <script src="script.js"></script>
+    <ul id="fileList" class="mt-6 text-left transition-all duration-300"></ul>
+
+    <button id="mergeBtn" class="hidden bg-green-400 text-white text-xl px-6 py-3 mt-6 w-full rounded-lg hover:bg-green-500">
+        Merge PDFs
+    </button>
 </main>
+<script src="script.js"></script>
 </body>
 </html>

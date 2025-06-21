@@ -7,23 +7,56 @@ let pdfFiles = [];
 
 function updateList() {
     fileList.innerHTML = "";
+
     pdfFiles.forEach((file, index) => {
         const listItem = document.createElement("li");
-        listItem.className = "bg-white p-2 mt-2 rounded-lg shadow text-gray-700 flex justify-between items-center";
+        listItem.className = "bg-white p-3 mt-2 rounded-lg shadow text-gray-700 flex justify-between items-center cursor-move transition-all";
+        listItem.setAttribute("draggable", "true");
+        listItem.dataset.index = index;
 
         listItem.innerHTML = `
-            <span>${file.name}</span>
-            <button class="text-red-500" onclick="removeFile(${index})">✖</button>
-        `;
+      <span class="flex items-center gap-2"><span class="text-gray-400">☰</span> ${file.name}</span>
+      <button class="text-red-500 hover:text-red-700" onclick="removeFile(${index})">✖</button>
+    `;
+
+        listItem.addEventListener("dragstart", (e) => {
+            listItem.classList.add("dragging");
+            e.dataTransfer.setData("text/plain", index);
+        });
+
+        listItem.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            listItem.classList.add("drag-over-item");
+        });
+
+        listItem.addEventListener("dragleave", () => {
+            listItem.classList.remove("drag-over-item");
+        });
+
+        listItem.addEventListener("drop", (e) => {
+            e.preventDefault();
+            listItem.classList.remove("drag-over-item");
+
+            const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
+            const targetIndex = parseInt(listItem.dataset.index);
+
+            if (draggedIndex !== targetIndex) {
+                const moved = pdfFiles.splice(draggedIndex, 1)[0];
+                pdfFiles.splice(targetIndex, 0, moved);
+
+                // Re-render after a short delay to allow UI update
+                setTimeout(updateList, 0);
+            }
+        });
+
+        listItem.addEventListener("dragend", () => {
+            listItem.classList.remove("dragging");
+        });
 
         fileList.appendChild(listItem);
     });
 
-    if (pdfFiles.length > 0) {
-        mergeBtn.classList.remove("hidden");
-    } else {
-        mergeBtn.classList.add("hidden");
-    }
+    mergeBtn.classList.toggle("hidden", pdfFiles.length === 0);
 }
 
 function addFiles(files) {
@@ -44,10 +77,18 @@ fileInput.addEventListener("change", (e) => {
     addFiles(e.target.files);
 });
 
-dropZone.addEventListener("dragover", (e) => e.preventDefault());
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drag-over");
+});
 
 dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
+    dropZone.classList.remove("drag-over");
     addFiles(e.dataTransfer.files);
 });
 
